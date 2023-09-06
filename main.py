@@ -53,7 +53,6 @@ def send_data(issue, vector_db: FAISS):
     ]
     retrieved_content = "\n".join(retrieved_content)
     body = {"issue": issue_data, "retrieved": retrieved_content}
-    print(body)
     # TODO
     url = "https://us-central1-palisades-sec.cloudfunctions.net/palisade-feature"
     res = requests.post(
@@ -62,7 +61,6 @@ def send_data(issue, vector_db: FAISS):
         headers={"Content-Type": "application/json; charset=utf-8"},
     )
     response = json.loads(res.content)
-    print(response)
     file_content = response["file_content"]
     file_path = response["file_path"]
     pr_data = response["pr_data"]
@@ -86,26 +84,27 @@ def get_issues(repository_name, issue_number):
 
 def publish_changes(repository_name, file_content: str, file_path):
     #  Get main branch sha
+    print("Get main branch sha")
     url = f"https://api.github.com/repos/{repository_name}/git/ref/heads/main"
     res = requests.get(url, headers=headers)
     sha = json.loads(res.content)["object"]["sha"]
 
     #  Create new branch
+    print("Create new branch")
     new_branch_name = f"test_branch_{uuid4()}"
     url = f"https://api.github.com/repos/{repository_name}/git/refs"
     body = {"ref": f"refs/heads/{new_branch_name}", "sha": sha}
     res = requests.post(url, data=json.dumps(body), headers=headers)
 
     #  Get file SHA
+    print("Get file SHA")
     url = f"https://api.github.com/repos/{repository_name}/contents/{file_path}"
     res = requests.get(url, headers=headers)
-    print(file_path)
-    print(res.content)
     sha = json.loads(res.content)["sha"]
 
     # Update file
+    print("Update file")
     content = base64.b64encode(file_content.encode("ascii"))
-    # content = base64.b64encode(b"test content")
     body = {
         "message": "commit from palisade",
         "content": content.decode("ascii"),
@@ -130,10 +129,10 @@ def create_pr(repository_name, head, base, pr_data):
 
 def main(repo, issue):
     vector_db = create_vector_db(repository_name=repo)
+    print("Creating Vector DB")
     file_content, file_path, pr_data = send_data(get_issues(repo, issue), vector_db)
-    print(file_path)
-    print(pr_data)
     new_branch_name = publish_changes(repo, file_content, file_path)
+    print("Create PR")
     create_pr(repo, new_branch_name, "main", pr_data)
 
 
