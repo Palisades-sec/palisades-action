@@ -1,0 +1,16 @@
+name: 'Palisades'
+description: 'GitHub Action that performs code review and creates PR'
+author: 'Srajan Gupta <@Srajangpt1> & Aditya Punetha <@AdityaPunetha> | Palisades'
+inputs:
+  palisades_token:
+    description: 'Palisades api token - get it from palisades.streamlit.io. Required only for private repositories'
+    required: false
+  github_token:
+    description: 'Github token to create PRs | Required only for Private Repositories'
+    required: false
+branding:
+  color: 'orange'
+  icon: 'lock'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
