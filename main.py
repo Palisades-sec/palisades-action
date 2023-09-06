@@ -129,6 +129,8 @@ def create_pr(repository_name, head, base, pr_data):
 def main(repo, issue):
     vector_db = create_vector_db(repository_name=repo)
     file_content, file_path, pr_data = send_data(get_issues(repo, issue), vector_db)
+    print(file_path)
+    print(pr_data)
     new_branch_name = publish_changes(repo, file_content, file_path)
     create_pr(repo, new_branch_name, "main", pr_data)
 
