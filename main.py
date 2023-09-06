@@ -30,7 +30,8 @@ def get_source_chunks(files):
 
 
 def create_vector_db(repository_name):
-    loader = DirectoryLoader(f"./tmp/{repository_name}/", glob="**/*.py")
+    repo_name = repository_name.split("/")[1]
+    loader = DirectoryLoader(f"./tmp/{repo_name}/", glob="**/*.py")
     data = loader.load()
     FAISS_DB_PATH = f"./FAISS/{os.path.basename(repository_name)}"
     faiss_db = None
