@@ -5,9 +5,12 @@ inputs:
   palisades_token:
     description: 'Palisades api token - get it from palisades.streamlit.io. Required only for private repositories'
     required: false
-  github_token:
-    description: 'Github token to create PRs | Required only for Private Repositories'
-    required: false
+  # github_token:
+  #   description: 'Github token to create PRs | Required only for Private Repositories'
+  #   required: false
+  issue_number: 
+    description: 'Issue number for which feature dev to be done'
+    required: true
 branding:
   color: 'orange'
   icon: 'lock'
