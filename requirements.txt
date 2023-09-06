@@ -2,3 +2,4 @@ langchain
 pydantic
 sentence_transformers
 faiss-cpu
+unstructured
