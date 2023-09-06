@@ -70,6 +70,7 @@ def send_data(issue, vector_db: FAISS):
 def get_issues(repository_name, issue_number):
     url = f"https://api.github.com/repos/{repository_name}/issues/{issue_number}"
     res = requests.get(url, headers=headers)
+    print(res.content)
     # TODO
     # if res.status_code == 200:
     # issues = json.loads(res.content)
