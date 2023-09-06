@@ -70,7 +70,6 @@ def send_data(issue, vector_db: FAISS):
 def get_issues(repository_name, issue_number):
     url = f"https://api.github.com/repos/{repository_name}/issues/{issue_number}"
     res = requests.get(url, headers=headers)
-    print(res.content)
     # TODO
     # if res.status_code == 200:
     # issues = json.loads(res.content)
@@ -98,6 +97,9 @@ def publish_changes(repository_name, file_content: str, file_path):
     #  Get file SHA
     url = f"https://api.github.com/repos/{repository_name}/contents/{file_path}"
     res = requests.get(url, headers=headers)
+    if res.status_code != 200:
+        print(file_path)
+        print(res.content)
     sha = json.loads(res.content)["sha"]
 
     # Update file
