@@ -105,7 +105,7 @@ def publish_changes(repository_name, file_content: str, file_path):
 
     # Update file
     content = base64.b64encode(file_content.encode("ascii"))
-    content = base64.b64encode(b"test content")
+    # content = base64.b64encode(b"test content")
     body = {
         "message": "commit from palisade",
         "content": content.decode("ascii"),
