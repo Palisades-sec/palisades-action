@@ -95,7 +95,7 @@ def publish_changes(repository_name, file_content: str, file_path):
     res = requests.post(url, data=json.dumps(body), headers=headers)
 
     #  Get file SHA
-    url = f"https://api.github.com/repos/{repository_name}/contents/{file_path}"
+    url = f"https://api.github.com/repos/{repository_name}/contents/{file_path}?ref={new_branch_name}"
     res = requests.get(url, headers=headers)
     print(file_path)
     print(res.content)
