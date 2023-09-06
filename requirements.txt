@@ -1,5 +1,5 @@
-langchain
-pydantic
-sentence_transformers
+langchain==0.0.272
+pydantic==2.3.0
+sentence-transformers==2.2.2
 faiss-cpu
-unstructured
+unstructured==0.10.11
