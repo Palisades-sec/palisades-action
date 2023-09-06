@@ -53,6 +53,7 @@ def send_data(issue, vector_db: FAISS):
     ]
     retrieved_content = "\n".join(retrieved_content)
     body = {"issue": issue_data, "retrieved": retrieved_content}
+    print(body)
     # TODO
     url = "https://us-central1-palisades-sec.cloudfunctions.net/palisade-feature"
     res = requests.post(
