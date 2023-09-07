@@ -44,7 +44,7 @@ def create_vector_db(repository_name):
     return faiss_db
 
 
-def send_data(issue, vector_db: FAISS):
+def send_data(issue, vector_db: FAISS, cf_auth_token):
     issue_data = f"Title: {issue.title}\n\n{issue.body}"
     retrieved_docs = vector_db.similarity_search(issue_data, k=4)
     retrieved_content = [
@@ -58,8 +58,12 @@ def send_data(issue, vector_db: FAISS):
     res = requests.post(
         url,
         data=json.dumps(body),
-        headers={"Content-Type": "application/json; charset=utf-8"},
+        headers={
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": cf_auth_token,
+        },
     )
+    # TODO Auth response handling
     response = json.loads(res.content)
     file_content = response["file_content"]
     file_path = response["file_path"]
@@ -96,7 +100,6 @@ def publish_changes(repository_name, file_content: str, file_path):
     body = {"ref": f"refs/heads/{new_branch_name}", "sha": sha}
     res = requests.post(url, data=json.dumps(body), headers=headers)
 
-
     #  Get file SHA
     print("Get file SHA")
     url = f"https://api.github.com/repos/{repository_name}/contents/{file_path}"
@@ -128,10 +131,11 @@ def create_pr(repository_name, head, base, pr_data):
     return res
 
 
-def main(repo, issue):
+def main(repo, issue, cf_auth):
     vector_db = create_vector_db(repository_name=repo)
     print("Creating Vector DB")
-    file_content, file_path, pr_data = send_data(get_issues(repo, issue), vector_db)
+    issue_data = get_issues(repo, issue)
+    file_content, file_path, pr_data = send_data(issue_data, vector_db, cf_auth)
     new_branch_name = publish_changes(repo, file_content, file_path)
     print("Create PR")
     create_pr(repo, new_branch_name, "main", pr_data)
@@ -139,9 +143,10 @@ def main(repo, issue):
 
 # main("Srajangpt1/palisades-feature-api", 3)
 if __name__ == "__main__":
-    if len(sys.argv)!=3:
+    if len(sys.argv) != 3:
         print("Enter repo name and issue")
     else:
-        repo  =  sys.argv[1]
+        repo = sys.argv[1]
         issue = sys.argv[2]
-        main(repo, issue)
+        cf_auth = sys.argv[3]
+        main(repo, issue, cf_auth)
