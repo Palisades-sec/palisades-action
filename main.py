@@ -64,6 +64,8 @@ def send_data(issue, vector_db: FAISS, cf_auth_token):
         },
     )
     # TODO Auth response handling
+    if res.status_code == 401:
+        raise Exception("Authorization for cloud function failed")
     response = json.loads(res.content)
     file_content = response["file_content"]
     file_path = response["file_path"]
