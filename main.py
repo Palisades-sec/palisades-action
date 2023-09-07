@@ -145,8 +145,8 @@ def main(repo, issue, cf_auth):
 
 # main("Srajangpt1/palisades-feature-api", 3)
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Enter repo name and issue")
+    if len(sys.argv) != 4:
+        print("Enter repo name, issue and CF auth token")
     else:
         repo = sys.argv[1]
         issue = sys.argv[2]
