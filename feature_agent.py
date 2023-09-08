@@ -12,6 +12,8 @@ from langchain.vectorstores import FAISS
 
 from schemas import GitHubIssue
 
+print(os.environ["REPO_NAME"])
+
 llm = ChatOpenAI(
     max_tokens=1000,
     model="gpt-4",
