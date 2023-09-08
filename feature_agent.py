@@ -114,7 +114,7 @@ def publish_changes(file_content: str, file_path: str):
 
 
 @tool
-def create_pr(repository_name, head, pr_title, pr_body):
+def create_pr(head: str, pr_title: str, pr_body: str):
     """TODO Docstring, Creates a pull request between given branch name and main branch. Requires branch name, PR title and PR body."""
     url = f"https://api.github.com/repos/{repository_name}/pulls"
     request_body = {

@@ -143,7 +143,9 @@ def main(repo, issue, cf_auth):
     # print("Create PR")
     # create_pr(repo, new_branch_name, "main", pr_data)
     os.environ["CF_AUTH_TOKEN"] = cf_auth
-    feature_development_agent.run(f"{agent_prompt}\nNew Issues created:\nIssue number {issue}")
+    feature_development_agent.run(
+        f"{agent_prompt}\nNew Issues created:\nIssue number {issue}"
+    )
 
 
 # main("Srajangpt1/palisades-feature-api", 3)
