@@ -12,7 +12,8 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import FAISS
 
 from schemas import GitHubIssue
-from feature_agent import feature_development_agent, agent_prompt
+
+# from feature_agent import feature_development_agent, agent_prompt
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 token = os.environ["GITHUB_TOKEN"]
@@ -137,15 +138,16 @@ def create_pr(repository_name, head, base, pr_data):
 def main(repo, issue, cf_auth):
     vector_db = create_vector_db(repository_name=repo)
     print("Creating Vector DB")
-    # issue_data = get_issues(repo, issue)
-    # file_content, file_path, pr_data = send_data(issue_data, vector_db, cf_auth)
-    # new_branch_name = publish_changes(repo, file_content, file_path)
-    # print("Create PR")
-    # create_pr(repo, new_branch_name, "main", pr_data)
+    issue_data = get_issues(repo, issue)
+    # print(send_data(issue_data, vector_db, cf_auth))
+    file_content, file_path, pr_data = send_data(issue_data, vector_db, cf_auth)
+    new_branch_name = publish_changes(repo, file_content, file_path)
+    print("Create PR")
+    create_pr(repo, new_branch_name, "main", pr_data)
     os.environ["CF_AUTH_TOKEN"] = cf_auth
-    feature_development_agent.run(
-        f"{agent_prompt}\nNew Issues created:\nIssue number {issue}"
-    )
+    # feature_development_agent.run(
+    #     f"{agent_prompt}\nNew Issues created:\nIssue number {issue}"
+    # )
 
 
 # main("Srajangpt1/palisades-feature-api", 3)
