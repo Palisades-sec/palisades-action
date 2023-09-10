@@ -1,6 +1,6 @@
-langchain==0.0.272
+langchain==0.0.284
+openai==0.27.8
 pydantic==2.3.0
 sentence-transformers==2.2.2
 faiss-cpu
 unstructured==0.10.11
-openai==0.27.8

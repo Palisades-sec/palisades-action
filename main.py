@@ -1,11 +1,12 @@
-import sys
 import base64
 import json
 import os
-from uuid import uuid4
+import sys
 from copy import deepcopy
+from uuid import uuid4
+
 import requests
-from langchain.document_loaders import DirectoryLoader, GitLoader
+from langchain.document_loaders import DirectoryLoader
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document
 from langchain.text_splitter import CharacterTextSplitter
