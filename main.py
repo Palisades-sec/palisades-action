@@ -1,7 +1,7 @@
+import argparse
 import base64
 import json
 import os
-import sys
 from copy import deepcopy
 from uuid import uuid4
 
@@ -140,7 +140,6 @@ def main(repo, issue, cf_auth):
     vector_db = create_vector_db(repository_name=repo)
     print("Creating Vector DB")
     issue_data = get_issues(repo, issue)
-    # print(send_data(issue_data, vector_db, cf_auth))
     file_content, file_path, pr_data = send_data(issue_data, vector_db, cf_auth)
     new_branch_name = publish_changes(repo, file_content, file_path)
     print("Create PR")
@@ -151,12 +150,39 @@ def main(repo, issue, cf_auth):
     # )
 
 
-# main("Srajangpt1/palisades-feature-api", 3)
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Enter repo name, issue and CF auth token")
-    else:
-        repo = sys.argv[1]
-        issue = sys.argv[2]
-        cf_auth = sys.argv[3]
-        main(repo, issue, cf_auth)
+    parser = argparse.ArgumentParser(description="Python Command Line App")
+
+    # Define command line arguments
+    parser.add_argument(
+        "--palisades_token",
+        required=True,
+        help="Palisades api token - get it from palisades.streamlit.io. Required only for private repositories",
+    )
+    parser.add_argument(
+        "--github_token",
+        required=False,
+        help="Github token to create PRs | Required only for Private Repositories",
+    )
+    parser.add_argument(
+        "--issue_number",
+        required=True,
+        help="Issue number for which feature dev to be done",
+    )
+    parser.add_argument(
+        "--repo_name",
+        required=True,
+        help="Repository name for which feature dev to be done",
+    )
+
+    args = parser.parse_args()
+
+    # Access the values of the command line arguments
+    palisades_token = args.palisades_token
+    github_token = args.github_token
+    issue_number = args.issue_number
+    repo_name = args.repo_name
+
+    if github_token is not None:
+        os.environ["GITHUB_TOKEN"] = github_token
+    main(repo_name, issue_number, palisades_token)
