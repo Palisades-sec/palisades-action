@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bullseye AS builder
+FROM python:3.10-slim-bullseye AS builder
 WORKDIR /app
 COPY . /app
 # We are installing a dependency here directly into our app source dir
