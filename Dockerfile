@@ -3,12 +3,8 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-RUN ls
-RUN cd github
-RUN ls
-RUN cd workspace
-RUN ls
-CMD ["python","main.py"]
+ENV PYTHONPATH /app
+CMD ["main.py"]
 
 
 # FROM python:3.10-slim-bullseye AS builder
