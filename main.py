@@ -148,6 +148,7 @@ def main(repo, issue, cf_auth):
     print("Creating Vector DB")
     issue_data = get_issues(repo, issue)
     file_content, file_path, pr_data = send_data(issue_data, vector_db, cf_auth)
+    print(file_path)
     new_branch_name = publish_changes(repo, file_content, file_path)
     print("Create PR")
     create_pr(repo, new_branch_name, "main", pr_data)
