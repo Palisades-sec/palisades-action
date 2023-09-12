@@ -50,6 +50,9 @@ def create_vector_db(repository_name):
 def send_data(issue, vector_db: FAISS, cf_auth_token):
     issue_data = f"Title: {issue.title}\n\n{issue.body}"
     retrieved_docs = vector_db.similarity_search(issue_data, k=4)
+    # complete_file = vector_db.similarity_search(
+    #     issue_data, filter=retrieved_docs[0].metadata
+    # )
     retrieved_content = [
         f"From path {docs.metadata['source']}\n{docs.page_content}"
         for docs in retrieved_docs
