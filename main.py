@@ -99,6 +99,7 @@ def publish_changes(repository_name, file_content: str, file_path):
     print("Get main branch sha")
     url = f"https://api.github.com/repos/{repository_name}/git/ref/heads/main"
     res = requests.get(url, headers=headers)
+    print(res.content)
     sha = json.loads(res.content)["object"]["sha"]
 
     #  Create new branch
@@ -107,11 +108,13 @@ def publish_changes(repository_name, file_content: str, file_path):
     url = f"https://api.github.com/repos/{repository_name}/git/refs"
     body = {"ref": f"refs/heads/{new_branch_name}", "sha": sha}
     res = requests.post(url, data=json.dumps(body), headers=headers)
+    print(res.content)
 
     #  Get file SHA
     print("Get file SHA")
     url = f"https://api.github.com/repos/{repository_name}/contents/{file_path}"
     res = requests.get(url, headers=headers)
+    print(res.content)
     sha = json.loads(res.content)["sha"]
 
     # Update file
@@ -124,6 +127,7 @@ def publish_changes(repository_name, file_content: str, file_path):
         "sha": sha,
     }
     res = requests.put(url, data=json.dumps(body), headers=headers)
+    print(res.content)
     return new_branch_name
 
 
