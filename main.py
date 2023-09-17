@@ -7,7 +7,7 @@ from uuid import uuid4
 
 import requests
 from langchain.document_loaders import DirectoryLoader
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.embeddings import HuggingFaceInferenceAPIEmbeddings
 from langchain.schema import Document
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import FAISS
@@ -16,7 +16,10 @@ from schemas import GitHubIssue
 
 # from feature_agent import feature_development_agent, agent_prompt
 
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+# embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+embeddings = HuggingFaceInferenceAPIEmbeddings(
+    api_key=os.environ["HF_TOKEN"], model_name="sentence-transformers/all-MiniLM-l6-v2"
+)
 token = os.environ["GITHUB_TOKEN"]
 headers = {"Authorization": f"token {token}"}
 
